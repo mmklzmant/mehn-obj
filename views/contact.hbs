@@ -1,0 +1,35 @@
+{{#section 'head'}}
+    <!-- we want Google to ignore this page -->
+    <meta name="robots" content="noindex">
+{{/section}}
+<main>
+    <h1>contact page</h1>
+    <p>We're testing some jQuery stuff.</p>
+    <div class="container">
+        <form action="/send-email" method="POST">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Subject</label>
+                <input name="subj" type="text" class="form-control" id="exampleInputEmail1" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">To</label>
+                <input name="to" type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Body</label>
+                <textarea class="form-control" rows="3" name="body"></textarea>
+            </div>
+            <button type="submit" class="btn btn-default">Send</button>
+        </form>
+    </div>
+
+    {{> discount}}
+</main>
+
+{{#section 'customjs'}}
+    <script>
+        $('document').ready(function(){
+            $('h1').html('jQuery Works');
+        });
+    </script>
+{{/section}}

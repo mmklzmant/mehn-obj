@@ -1,0 +1,25 @@
+{
+  "name": "mehnobj",
+  "description": "mongodb Express",
+  "main": "index.js",
+  "authors": [
+    "mmklzmant"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "handlebars",
+    "node.js"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "datatables.net": "^1.10.16",
+    "datatables.net-bs": "^2.1.1"
+  }
+}

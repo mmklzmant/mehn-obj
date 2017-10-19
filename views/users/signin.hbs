@@ -1,0 +1,77 @@
+{{#section 'head'}}
+    <!-- we want Google to ignore this page -->
+    <style>
+        form{
+            margin-top: 100px;
+        }
+    </style>
+{{/section}}
+<!-- login Modal -->
+
+<form class="form-horizontal"
+      name="signInForm"
+      id="signInForm"
+      action="/users/"
+      method="POST">
+
+    <div class="form-group">
+        <label for="login-tel" class="col-sm-2 control-label">手机号：</label>
+        <div class="col-sm-10">
+            <input type="tel"
+                   name="phone"
+                   class="form-control"
+                   id="login-tel"
+                   placeholder="请输入您的电话号码">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="login-pwd" class="col-sm-2 control-label">密码：</label>
+        <div class="col-sm-10">
+            <input type="password"
+                   name="pwd"
+                   class="form-control"
+                   id="login-pwd"
+                   placeholder="请输入密码">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label"></label>
+        <div class="col-sm-4">
+            <input type="text"
+                   name="vcode"
+                   class="form-control"
+                   id="register_vcode"
+                   placeholder="验证码">
+            <div id="vcode-error" class="alert alert-danger" role="alert">验证码不能为空</div>
+        </div>
+        <div class="col-sm-2 vcode">
+            <img src="/captcha" alt="error" id="vcode"/>
+        </div>
+        <div class="col-sm-4">
+            <p>请填写图片中的字符，不区分大小写</p>
+            <p><a href="#" id="getCode">看不清楚，重新换一张</a></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox"> 记住我
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="button"
+                   class="btn btn-default"
+                   onclick="validatorSignInForm()"
+                   value="登录"
+            >
+        </div>
+    </div>
+</form>
+
+{{#section 'customjs'}}
+    <script src="javascripts/signin.js"></script>
+{{/section}}

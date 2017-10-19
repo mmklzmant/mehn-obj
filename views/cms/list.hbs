@@ -1,0 +1,96 @@
+{{#section 'head'}}
+    <!-- we want Google to ignore this page -->
+    <link rel="stylesheet" href="vendor/datatables.net/css/dataTables.bootstrap.min.css">
+    <style>
+        main{
+            height: auto;
+            padding: 15px;
+        }
+    </style>
+{{/section}}
+<main>
+    <section class="content">
+        <table id="cmstable"
+               class="table table-striped table-bordered"
+               cellspacing="0"
+               width="100%">
+        </table>
+    </section>
+</main>
+{{#section 'customjs'}}
+    <script src = "vendor/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src = "vendor/datatables.net/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            getUsersList();
+        });
+        function getUsersList(){
+            var para  ='';
+            $.ajax({
+                url:'/cms/get-cms-list',
+                type: 'POST',
+                async:true,
+                data:para,
+                success: function(res)
+                {
+                    if(parseInt(res.code)==1)
+                    {
+                        var _userSet = getUserArr(res.users);
+                        renderTable(_userSet);
+                    }
+                    else{
+                        console.log("err", res.code);
+                    }
+                }
+            });
+        }
+        //渲染数据
+        function renderTable(userSet) {
+            $('#cmstable').DataTable( {
+                data:userSet,
+                columns: [
+                    { title: "作者" },
+                    { title: "标题" },
+                    { title: "分类" },
+                    { title: "地址" },
+                    { title: "内容" },
+                    { title: "审核通过" },
+                    { title: "操作",orderable: false }
+                ]
+            } );
+        };
+        //构造取得的数据
+        function getUserArr(userSet) {
+            var _userArr = userSet;
+            var jsoncount =_userArr.length;
+            var userData =  new Array();
+            for(var i=0;i<jsoncount;i++)
+            {
+                var _arr = new Array();
+                _arr[0]= _userArr[i].author;
+                _arr[1]= _userArr[i].title;
+                _arr[2]= _userArr[i].classTitle;
+                _arr[3]= _userArr[i].url;
+                _arr[4]= _userArr[i].content;
+                if(_userArr[i].isShow === 0)
+                {
+                    _arr[5] = "否"
+                }
+                else{
+                    _arr[5] = "是";
+                }
+                _arr[6]= '<button class="btn btn-default btn-sm" \
+			 data-toggle="modal" data-target="#editModal" onclick="edit(\''+_userArr[i]._id+'\')"> \
+			 <span class="glyphicon glyphicon-pencil"></span> \
+		  </button>  \
+		<button class="btn btn-danger btn-sm" data-toggle="modal" \
+		 data-target="#deleteModal" onclick="edit(\''+_userArr[i]._id+'\')"> \
+		<span class="glyphicon glyphicon-trash"></span> \
+	</button>';
+                userData[i]=_arr;
+            }
+            return userData;
+        };
+
+    </script>
+{{/section}}

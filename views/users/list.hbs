@@ -1,0 +1,336 @@
+{{#section 'head'}}
+    <!-- we want Google to ignore this page -->
+    <link rel="stylesheet" href="vendor/datatables.net/css/dataTables.bootstrap.min.css">
+    <style>
+        main{
+            height: auto;
+            padding: 15px;
+        }
+    </style>
+{{/section}}
+<main>
+    <section class="content">
+        <table id="example"
+               class="table table-striped table-bordered"
+               cellspacing="0"
+               width="100%">
+        </table>
+    </section>
+</main>
+<!-- delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="registerTitle">删除一条记录</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal"
+                      name="signUpForm"
+                      id="signUpform"
+                     >
+                    <input type="text" hidden="hidden" id="userId"/>
+                    <div class="form-group">
+                        <!--<label for="register_email" class="col-sm-2 control-label">Email</label>-->
+                        <div class="col-sm-12">
+                            <div class="alert alert-danger" role="alert">你确认要删除吗？</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-8 col-sm-12">
+                            <input type="button"
+                                   name="sure"
+                                   id="delete_sure"
+                                   onclick="deleteUser()"
+                                   data-dismiss="modal"
+                                   class="btn btn-default"
+                                   value="确认"
+                            >
+                            <input type="button"
+                                   name="quit"
+                                   id="d"
+                                   class="btn btn-default"
+                                   data-dismiss="modal"
+                                   value="取消">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="registerTitle">更新一条数据</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal"
+                      name="signUpForm"
+                      id="editForm"
+                      action="/"
+                      method="POST">
+                    <input type="text" id="editId" hidden/>
+                    <div class="form-group">
+                        <label for="register_email" class="col-sm-2 control-label">手机号:</label>
+                        <div class="col-sm-10">
+                            <input type="tel"
+                                   name="phone"
+                                   class="form-control"
+                                   id="edit-phone"
+                                   placeholder="请输入正确的手机号码"
+                                   readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register_email" class="col-sm-2 control-label">邮箱:</label>
+                        <div class="col-sm-10">
+                            <input type="tel"
+                                   name="email"
+                                   class="form-control"
+                                   id="edit-email"
+                                   placeholder="请输入正确的邮箱"
+                                   readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register_email" class="col-sm-2 control-label">昵称:</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="nickName"
+                                   class="form-control"
+                                   id="edit-nickname"
+                                   placeholder="请输入昵称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register_email" class="col-sm-2 control-label">真实姓名:</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="realName"
+                                   class="form-control"
+                                   id="edit-realname"
+                                   placeholder="请输入真实姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register_email" class="col-sm-2 control-label">用户名:</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="loginName"
+                                   class="form-control"
+                                   id="edit-loginname"
+                                   placeholder="请设置登录名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-2 control-label">年龄:</label>
+                        <div class="col-sm-10">
+                            <input type="number"
+                                   name="age"
+                                   class="form-control"
+                                   id="edit-age"
+                                   placeholder="请输入年龄">
+                        </div>
+                    </div>
+                   <!-- <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-2 control-label">头像:</label>
+                        <div class="col-sm-10">
+                            <input type="file"
+                                   name="picture"
+                                   class="form-control"
+                                   id="edit-pic">
+                        </div>
+                    </div>-->
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-2 control-label">性别:</label>
+
+                        <div class="col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="radio" name="gender" id="male" value="1"> 男
+                                </label>
+                                <label>
+                                    <input type="radio" name="gender" id="female" value="0"> 女
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register_email" class="col-sm-2 control-label">地址:</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="address"
+                                   class="form-control"
+                                   id="edit-address"
+                                   placeholder="请输入您的地址">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-9 col-sm-12">
+                            <input type="button"
+                                   name="update"
+                                   class="btn btn-default"
+                                   id="update"
+                                   onclick="updateData()"
+                                   data-dismiss="modal"
+                                   value="更新"
+                            >
+                            <input type="button"
+                                   name="update"
+                                   id="update_quit"
+                                   data-dismiss="modal"
+                                   class="btn btn-default"
+                                   value="取消"
+                            >
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{#section 'customjs'}}
+    <script src = "vendor/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src = "vendor/datatables.net/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+           getUsersList();
+        });
+        function getUsersList(){
+            var para  ='';// $("#signform").serialize();
+            $.ajax({
+                url:'/users/get-users-list',
+                type: 'POST',
+                async:true,
+                data:para,
+                success: function(res)
+                {
+                    if(parseInt(res.code)==1)
+                    {
+                       /* console.log(res.users);*/
+                        var _userSet = getUserArr(res.users);
+                        renderTable(_userSet);
+                    }
+                }
+            });
+        }
+        //渲染数据
+        function renderTable(userSet) {
+            $('#example').DataTable( {
+                data:userSet,
+                columns: [
+                    { title: "realname" },
+                    { title: "nicname" },
+                    { title: "loginname" },
+                    { title: "gender" },
+                    { title: "phone" },
+                    { title: "age" },
+                    { title: "操作",orderable: false }
+                ]
+            } );
+        };
+        //构造取得的数据
+        function getUserArr(userSet) {
+            var _userArr = userSet;
+            var jsoncount =_userArr.length;
+            var userData =  new Array();
+            for(var i=0;i<jsoncount;i++)
+            {
+                var _arr = new Array();
+                _arr[0]= _userArr[i].realName;
+                _arr[1]= _userArr[i].nickName;
+                _arr[2]= _userArr[i].loginName;
+                if(parseInt(_userArr[i].gender)==1)
+                {
+                    _arr[3]= "男";
+                }
+                if(parseInt(_userArr[i].gender)==0)
+                {
+                    _arr[3]= "女";
+                }
+                _arr[4]= _userArr[i].phone;
+                _arr[5]= _userArr[i].age;
+                _arr[6]= '<button class="btn btn-default btn-sm" \
+			 data-toggle="modal" data-target="#editModal" onclick="edit(\''+_userArr[i]._id+'\')"> \
+			 <span class="glyphicon glyphicon-pencil"></span> \
+		  </button>  \
+		<button class="btn btn-danger btn-sm" data-toggle="modal" \
+		 data-target="#deleteModal" onclick="deleteData(\''+_userArr[i]._id+'\')"> \
+		<span class="glyphicon glyphicon-trash"></span> \
+	</button>';
+                userData[i]=_arr;
+            }
+            return userData;
+        };
+
+        //编辑数据
+        function edit(id)
+        {
+            $.ajax({
+                url: "/users/show-user/"+id,
+                type: "GET",
+                async: true,
+                data: "",
+                success: function(res){
+                    $("#edit-phone").val(res.users[0].phone);
+                    $("#edit-email").val(res.users[0].email);
+                    $("#edit-nickname").val(res.users[0].nickName);
+                    $("#edit-realname").val(res.users[0].realName);
+                    $("#edit-loginname").val(res.users[0].loginName);
+                    $("#edit-age").val(res.users[0].age);
+                    $("#edit-address").val(res.users[0].address);
+                    if(res.users[0].gender === 0)
+                    {
+                        $("#female").attr("checked", "checked");
+                    }
+                    if(res.users[0] === 1)
+                    {
+                        $("#male").attr("checked", "checked");
+                    }
+                }
+            });
+        }
+
+        //编辑数据
+        function deleteData(id)
+        {
+            $("#userId").val(id);
+        }
+        //更新按钮点击
+        function updateData() {
+            var data = $("#editForm").serialize();
+           $.ajax({
+               url: "/users/save-profile",
+               type: "POST",
+               async: true,
+               data: data,
+               success: function (res) {
+                   if(res.code === 1)
+                   {
+                       window.location.href = "/users/list"
+                   }
+               }
+           });
+        };
+        function deleteUser(){
+            var id = $("#userId").val();
+            $.ajax({
+                url: "/users/delete-user/" + id,
+                type: "GET",
+                async: true,
+                data: "",
+                success: function (res) {
+                    if(res.code === 1)
+                    {
+                        window.location.href = "/users/list"
+                    }
+                }
+            });
+        }
+    </script>
+{{/section}}
